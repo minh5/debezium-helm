@@ -1,0 +1,19 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.kafka.name }}-app
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.kafka.name }}-app
+    spec:
+      restartPolicy: {{ .Values.global.restartPolicy }}
+      containers:
+      - name: {{ .Release.Name }}-app
+        image: {{ .Values.global.image}}:{{ .Values.global.imageTag }}
+        imagePullPolicy: {{ .Values.global.pullPolicy }}
+        ports:
+          - containerPort: {{ .Values.app.containerPort }}
+{{- include "common_deployment" . -}}

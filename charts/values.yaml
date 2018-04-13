@@ -1,0 +1,45 @@
+global:
+  pullPolicy: ifNotExists
+  restartPolicy: Always
+connect:
+  name: connect
+  image: minh5/connect
+  imageTag: latest
+  containerPort: 8083
+kafka :
+  name: kafka
+  image: debezium/kafka
+  imageTag: 0.7
+  containerPort: 9092
+postgres:
+  tier: scheduler
+  replicas: 1
+  restartPolicy: Always
+zookeeper:
+  image: debezium/zookeeper
+  imageTag: 0.7
+  replicas: 1
+  containerPort1: 2181
+  containerPort2: 2888
+  containerPort3: 3888
+persistence: # will proabably rewrite for persistant kakfa logs
+  enabled: false
+  logs:
+    name: logs-storage
+    storageClass: generic
+    accessMode: ReadWriteOnce
+    requestSize: 1Gi
+    size: 8Gi
+    path: /tmp
+postgres:
+  enabled: false
+  name: postgres
+  image: minh5:psql
+  imagePullPolicy: IfNotPresent
+  replicas: 1
+  tier: db
+  containerPort: 5432
+  auth:
+    user: myuser
+    password: mypassword
+    db: airflow

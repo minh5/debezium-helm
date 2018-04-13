@@ -1,0 +1,19 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.connect.name }}-app
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ ..Values.connect.name }}-app
+    spec:
+      restartPolicy: {{ .Values.global.restartPolicy }}
+      containers:
+      - name: {{ .Values.connect.name }}-app
+        image: {{ .Values.connect.image}}:{{ .Values.connect.imageTag }}
+        imagePullPolicy: {{ .Values.global.pullPolicy }}
+        ports:
+          - containerPort: {{ .Values.app.containerPort }}
+{{- include "common_deployment" . -}}

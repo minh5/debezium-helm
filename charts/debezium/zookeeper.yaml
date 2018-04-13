@@ -1,0 +1,21 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.zookeeper.name }}
+spec:
+  replicas: {{ .Values.zookeeper.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.zookeeper.name }}
+    spec:
+      containers:
+      - name: {{ .Values.zookeeper.name }}-app
+        image: {{ .Values.zooekeeper.image}}:{{ .Values.zookeeper.imageTag }}
+        imagePullPolicy: {{ .Values.global.pullPolicy }}
+        ports:
+          - containerPort: {{ .Values.zookeeper.containerPort1 }}
+          - containerPort: {{ .Values.zookeeper.containerPort2 }}
+          - containerPort: {{ .Values.zookeeper.containerPort3 }}
+{{- include "common_deployment" . -}}
